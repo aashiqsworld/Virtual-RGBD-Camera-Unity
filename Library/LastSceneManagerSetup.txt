@@ -1,5 +1,0 @@
-sceneSetups:
-- path: Assets/Built-In RP/Built-in RP Scene.unity
-  isLoaded: 1
-  isActive: 1
-  isSubScene: 0
