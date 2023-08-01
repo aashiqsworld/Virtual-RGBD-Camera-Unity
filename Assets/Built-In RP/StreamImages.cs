@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Built_In_RP;
 using UnityEngine;
 using Unity.WebRTC;
 using Unity.WebRTC.Samples;
@@ -17,11 +18,10 @@ class PeerConnectionSample : MonoBehaviour
     [SerializeField] private Text localCandidateId;
     [SerializeField] private Text remoteCandidateId;
     [SerializeField] private Dropdown dropDownProtocol;
-
-    [SerializeField] private Camera cam;
+    
     [SerializeField] private RawImage sourceImage;
     [SerializeField] private RawImage receiveImage;
-    [SerializeField] private Transform rotateObject;
+    [SerializeField] private VirtualRGBDCameraScript rgbd;
 #pragma warning restore 0649
 
     enum ProtocolOption
@@ -33,7 +33,8 @@ class PeerConnectionSample : MonoBehaviour
 
     private RTCPeerConnection _pc1, _pc2;
     private List<RTCRtpSender> pc1Senders;
-    private MediaStream videoStream, receiveStream;
+    private MediaStream receiveStream;
+    private VideoStreamTrack videoStream;
     private DelegateOnIceConnectionChange pc1OnIceConnectionChange;
     private DelegateOnIceConnectionChange pc2OnIceConnectionChange;
     private DelegateOnIceCandidate pc1OnIceCandidate;
@@ -88,20 +89,16 @@ class PeerConnectionSample : MonoBehaviour
 
         if (videoStream == null)
         {
-            videoStream = cam.CaptureStream(WebRTCSettings.StreamSize.x, WebRTCSettings.StreamSize.y);
+            videoStream = new VideoStreamTrack(rgbd.colorTexture);
         }
 
-        sourceImage.texture = cam.targetTexture;
+        sourceImage.texture = rgbd.colorTexture;
         sourceImage.color = Color.white;
     }
 
     private void Update()
     {
-        if (rotateObject != null)
-        {
-            float t = Time.deltaTime;
-            rotateObject.Rotate(100 * t, 200 * t, 300 * t);
-        }
+        
     }
 
     private static RTCConfiguration GetSelectedSdpSemantics()
@@ -195,10 +192,9 @@ class PeerConnectionSample : MonoBehaviour
 
     private void AddTracks()
     {
-        foreach (var track in videoStream.GetTracks())
-        {
-            pc1Senders.Add(_pc1.AddTrack(track, videoStream));
-        }
+        
+        pc1Senders.Add(_pc1.AddTrack(videoStream));
+        
 
 
         var codecs = RTCRtpSender.GetCapabilities(TrackKind.Video).codecs;

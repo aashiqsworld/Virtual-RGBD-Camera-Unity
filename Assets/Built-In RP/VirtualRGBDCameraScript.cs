@@ -34,14 +34,14 @@ namespace Built_In_RP
         {
             GetComponent<Camera>().depthTextureMode = DepthTextureMode.Depth;
             _camera = GetComponent<Camera>();
-            _camera.enabled = false;
-            // InitRenderTextures();
+            // _camera.enabled = false;
+            InitRenderTextures();
             
             // Screen.SetResolution(imageResolution.x, imageResolution.y, false);
             
-            if(colorTexture != null)
-                colorTexture.Release();
-            colorTexture = new RenderTexture(imageResolution.x, imageResolution.y, 0, RenderTextureFormat.Default);
+            // if(colorTexture != null)
+            //     colorTexture.Release();
+            // colorTexture = new RenderTexture(imageResolution.x, imageResolution.y, 0, RenderTextureFormat.Default);
         }
 
         void LateUpdate()
@@ -54,7 +54,7 @@ namespace Built_In_RP
                 // CaptureDepthImage();
             }
 
-            _camera.Render();
+            // _camera.Render();
         }
 
         void InitRenderTextures()
@@ -66,11 +66,12 @@ namespace Built_In_RP
             if(depthTexture != null)
                 depthTexture.Release();
             depthTexture = new RenderTexture(imageResolution.x, imageResolution.y, 0, RenderTextureFormat.Depth);
+            // depthTexture = new RenderTexture(imageResolution.x, imageResolution.y, 0, RenderTextureFormat.Default);
             
-            if(depthCustomTexture != null)
-                depthCustomTexture.Release();
-            depthCustomTexture =
-                new CustomRenderTexture(imageResolution.x, imageResolution.y, RenderTextureFormat.Depth);
+            // if(depthCustomTexture != null)
+            //     depthCustomTexture.Release();
+            // depthCustomTexture =
+            //     new CustomRenderTexture(imageResolution.x, imageResolution.y, RenderTextureFormat.Depth);
             
             // _camera.SetTargetBuffers(colorTexture.colorBuffer, depthTexture.depthBuffer);
             
@@ -119,11 +120,12 @@ namespace Built_In_RP
 
         private void OnRenderImage(RenderTexture source, RenderTexture destination)
         {
-            // Graphics.Blit(source, destination, depthMaterial);
-            Graphics.Blit(source, colorTexture, depthMaterial);
-
+            Graphics.Blit(source, destination);
+            Graphics.Blit(source, colorTexture);
+            Graphics.Blit(source, depthTexture, depthMaterial);
+        
             // Debug.Log(destination.width + ", " + destination.height);
-
+        
             
             if (Input.GetKeyDown(KeyCode.Space))
             {
