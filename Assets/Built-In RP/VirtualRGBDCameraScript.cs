@@ -65,8 +65,8 @@ namespace Built_In_RP
             
             if(depthTexture != null)
                 depthTexture.Release();
-            depthTexture = new RenderTexture(imageResolution.x, imageResolution.y, 0, RenderTextureFormat.Depth);
-            // depthTexture = new RenderTexture(imageResolution.x, imageResolution.y, 0, RenderTextureFormat.Default);
+            // depthTexture = new RenderTexture(imageResolution.x, imageResolution.y, 0, RenderTextureFormat.Depth);
+            depthTexture = new RenderTexture(imageResolution.x, imageResolution.y, 0, RenderTextureFormat.Default);
             
             // if(depthCustomTexture != null)
             //     depthCustomTexture.Release();

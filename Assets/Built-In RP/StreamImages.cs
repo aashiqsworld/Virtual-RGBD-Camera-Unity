@@ -89,7 +89,7 @@ class PeerConnectionSample : MonoBehaviour
 
         if (videoStream == null)
         {
-            videoStream = new VideoStreamTrack(rgbd.colorTexture);
+            videoStream = new VideoStreamTrack(rgbd.depthTexture);
         }
 
         sourceImage.texture = rgbd.colorTexture;
